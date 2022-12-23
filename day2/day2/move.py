@@ -6,7 +6,13 @@ class Move:
         WIN = 2
         DRAW = 3
 
-    SHAPE_SCORES = {"X" : 1, "Y": 2, "Z": 3}
+    SHAPE_SCORES = {"A" : 1, "B": 2, "C": 3}
+
+    DESIRED_OUTCOMES = {
+        "X" : Outcome.LOSE,
+        "Y" : Outcome.DRAW,
+        "Z" : Outcome.WIN
+    }
 
     OUTCOME_SCORES = {
         Outcome.LOSE: 0,
@@ -15,15 +21,27 @@ class Move:
     }
 
     OUTCOMES = {
-        "AX" : Outcome.DRAW,
-        "AY" : Outcome.WIN,
-        "AZ" : Outcome.LOSE,
-        "BX" : Outcome.LOSE,
-        "BY" : Outcome.DRAW,
-        "BZ" : Outcome.WIN,
-        "CX" : Outcome.WIN,
-        "CY" : Outcome.LOSE,
-        "CZ" : Outcome.DRAW
+        "AA" : Outcome.DRAW,
+        "AB" : Outcome.WIN,
+        "AC" : Outcome.LOSE,
+        "BA" : Outcome.LOSE,
+        "BB" : Outcome.DRAW,
+        "BC" : Outcome.WIN,
+        "CA" : Outcome.WIN,
+        "CB" : Outcome.LOSE,
+        "CC" : Outcome.DRAW
+    }
+
+    RESPONSES = {
+        ("A", Outcome.LOSE) : "C",
+        ("A", Outcome.DRAW) : "A",
+        ("A", Outcome.WIN) : "B",
+        ("B", Outcome.LOSE) : "A",
+        ("B", Outcome.DRAW) : "B",
+        ("B", Outcome.WIN) : "C",
+        ("C", Outcome.LOSE) : "B",
+        ("C", Outcome.DRAW) : "C",
+        ("C", Outcome.WIN) : "A",
     }
 
     def __init__(self, move_str):
@@ -35,15 +53,18 @@ class Move:
     def shape_score(self):
         return self.SHAPE_SCORES[self.my_shape()]
 
+    def desired_outcome(self):
+        return self.DESIRED_OUTCOMES[self.move_str[2]]
+
     def my_shape(self):
-        return self.move_str[2]
+        key = (self.opponent_shape(), self.desired_outcome())
+        return self.RESPONSES[key]
 
     def opponent_shape(self):
         return self.move_str[0]
 
     def outcome(self):
-        key = self.opponent_shape() + self.my_shape()
-        return self.OUTCOMES[key]
+        return self.desired_outcome()
 
     def outcome_score(self):
         return self.OUTCOME_SCORES[self.outcome()]

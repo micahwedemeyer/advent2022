@@ -15,5 +15,6 @@ full_stacks = (stack for stack in stacks if len(stack) > 0)
 elves = map(Elf, full_stacks)
 sorted_elves = sorted(elves, key = lambda e: e.get_sum_calories(), reverse = True)
 
-highest = sorted_elves[0]
-print(highest.get_sum_calories())
+highest_3 = sorted_elves[:3]
+s = sum(map(lambda e: e.get_sum_calories(), highest_3))
+print(s)

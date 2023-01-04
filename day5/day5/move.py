@@ -7,10 +7,10 @@ class Move:
         self._move = Move._parse_move_str(move_str)
 
     def from_col(self):
-        return self._move[1]
+        return self._move[1] - 1
 
     def to_col(self):
-        return self._move[2]
+        return self._move[2] - 1
 
     def n(self):
         return self._move[0]

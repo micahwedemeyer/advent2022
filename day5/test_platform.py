@@ -44,5 +44,5 @@ def test_move():
     m = Move("move 2 from 2 to 1")
     p.move(m)
 
-    assert p.get_top(0) == "P"
+    assert p.get_top(0) == "O"
     assert p.get_top(1) == None

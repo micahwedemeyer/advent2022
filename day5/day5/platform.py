@@ -14,15 +14,20 @@ class Platform:
         return col[-1] if len(col) > 0 else None
 
     def move(self, move):
-        for i in range(move.n()):
-            v = self._pop(move.from_col())
-            self._push(move.to_col(), v)
+        vals = self._pop_n(move.from_col(), move.n())
+        [self._push(move.to_col(), v) for v in vals]
+        # for i in range(move.n()):
+        #     v = self._pop(move.from_col())
+        #     self._push(move.to_col(), v)
 
     def _push(self, column, val):
         self._stacks[column].append(val)
 
     def _pop(self, column):
         return self._stacks[column].pop()
+
+    def _pop_n(self, column, n):
+        return reversed([self._stacks[column].pop() for i in range(n)])
 
     def _parse_crate_str(self, crate_str_lines):
         rows = [Platform._parse_crate_row(row_str) for row_str in crate_str_lines[:len(crate_str_lines) - 1]]

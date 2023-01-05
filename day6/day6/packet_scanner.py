@@ -6,6 +6,7 @@ from collections import deque
 # for advancing the window and will not get slower as window size or input
 # size increases
 class PacketScanner:
+    WINDOW_SIZE = 14
 
     def __init__(self, input : TextIOWrapper):
         self._input = input
@@ -15,9 +16,9 @@ class PacketScanner:
         self._bootstrap()
 
     def _bootstrap(self):
-        [self._window.append(c) for c in self._input.read(4)]
+        [self._window.append(c) for c in self._input.read(PacketScanner.WINDOW_SIZE)]
         [self._mark(c) for c in self._window]
-        self._pos = 4
+        self._pos = PacketScanner.WINDOW_SIZE
 
     def find_packet_marker(self):
         while not self.is_marker_window():
@@ -26,7 +27,7 @@ class PacketScanner:
         return self._pos
 
     def is_marker_window(self) -> bool:
-        return len(self._marker_counts) == 4
+        return len(self._marker_counts) == PacketScanner.WINDOW_SIZE
 
     def window_str(self) -> str:
         return "".join(self._window)

@@ -30,7 +30,7 @@ $ ls
 
 def test_parsing():
     # f = BufferedReader(BytesIO(bytes(TEST_FS, "utf-8")))
-    f = StringIO(TEST_FS)
+    f = TextIOWrapper(StringIO(TEST_FS))
     fsb = FilesystemBuilder(f)
     # fsb._process_input()
 
@@ -60,3 +60,21 @@ def test_append_file():
     assert len(fsb._root.children) == 1
     assert fsb._root.children[0].name == "log.out"
     assert fsb._root.children[0].size == 555
+
+def test_change_dir():
+    f = StringIO(TEST_FS)
+    fsb = FilesystemBuilder(f)
+
+    fsb._parse_dir_line("dir a")
+    fsb._parse_dir_line("dir b")
+
+    print(RenderTree(fsb._root))
+    assert len(fsb._root.children) == 2
+
+    fsb._change_dir("a")
+    assert fsb._cwd.name == "a"
+    assert len(fsb._cwd.children) == 0
+
+    fsb._change_dir("..")
+    assert fsb._cwd.name == "/"
+    assert len(fsb._root.children) == 2

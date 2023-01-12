@@ -5,3 +5,6 @@ class Fyle(NodeMixin):
         self.name = name
         self.size = size
         self.parent = parent
+
+    def __repr__(self):
+        return f'{self.name} (file, size={self.size})'

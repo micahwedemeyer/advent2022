@@ -7,12 +7,25 @@ from day07.dir import Dir
 # fs = FilesystemBuilder(f)
 # fs._process_input()
 
+TOTAL_SIZE = 70000000
+REQUIRED_SPACE = 30000000
+
+
 with open('input.txt', 'r', encoding="utf-8") as f:
     fs = FilesystemBuilder(f)
     fs._process_input()
     # print(RenderTree(fs._root))
 
-    all_dirs = [d for d in PreOrderIter(fs._root) if isinstance(d, Dir)]
-    size_dirs = [d for d in all_dirs if d.sum_size() < 100000]
+    total_used = fs._root.sum_size()
+    total_unused = TOTAL_SIZE - total_used
+    min_to_delete = REQUIRED_SPACE - total_unused
 
-    print(sum([d.sum_size() for d in size_dirs]))
+    print(f'Total size: {TOTAL_SIZE}')
+    print(f'Total used: {total_used}')
+    print(f'Total unused: {total_unused}')
+    print(f'Min to delete: {min_to_delete}')
+
+    smalls = [d for d in PreOrderIter(fs._root) if isinstance(d, Dir) and d.sum_size() >= min_to_delete]
+    smalls.sort(key = lambda d: d.sum_size())
+
+    print(smalls[0].sum_size())
